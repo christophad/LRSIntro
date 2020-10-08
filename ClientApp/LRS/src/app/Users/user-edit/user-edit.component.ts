@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { error } from 'protractor';
-import { combineLatest, forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AlertService } from 'src/app/alert/alert.service';
 import { LoaderService } from 'src/app/loader/loader.service';
@@ -68,6 +67,7 @@ export class UserEditComponent implements OnInit {
           })
         );
       } else {
+        // TODO explain?
         combinedResult = forkJoin([userTitlesObs, userTypesObs]).pipe(
           map(([y, z]) => {
             return <IUserEditModel>{
@@ -144,14 +144,15 @@ export class UserEditComponent implements OnInit {
   onSubmit() {
     this.loaderService.showLoader();
     if (this.editMode) {
+      // TODO this.userForm.value as IUserAddOrUpdate;
       this.userService
         .updateUser({
           id: this.userForm.value.id,
           name: this.userForm.value.name,
           surname: this.userForm.value.surname,
           birthDate: this.userForm.value.birthDate,
-          userType: this.userForm.value.userType,
-          userTitle: this.userForm.value.userTitle,
+          userTypeId: this.userForm.value.userType,
+          userTitleId: this.userForm.value.userTitle,
           emailAddress: this.userForm.value.email,
           isActive: true,
         })
@@ -168,13 +169,14 @@ export class UserEditComponent implements OnInit {
           }
         );
     } else {
+      // TODO this.userForm.value as IUserAddOrUpdate;
       this.userService
         .addUser({
           name: this.userForm.value.name,
           surname: this.userForm.value.surname,
           birthDate: this.userForm.value.birthDate,
-          userType: this.userForm.value.userType,
-          userTitle: this.userForm.value.userTitle,
+          userTypeId: this.userForm.value.userType,
+          userTitleId: this.userForm.value.userTitle,
           emailAddress: this.userForm.value.email,
           isActive: true,
         })

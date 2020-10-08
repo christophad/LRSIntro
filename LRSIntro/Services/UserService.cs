@@ -25,7 +25,8 @@ namespace LRSIntro.Services
             _mapper = mapper;
             _userTitleRepository = userTitleRepository;
             _userTypeRepository = userTypeRepository;
-            _logger = logger;
+            // TODO argument checks
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<IEnumerable<UserDTO>> GetAllUsersWithDetailsAsync()
         {
@@ -41,6 +42,7 @@ namespace LRSIntro.Services
                 throw new ArgumentException("User id is required.", paramName: nameof(id));
             }
 
+            // TODO not needed try catch since you already handle it on controller.
             try
             {
                 var res = await _userRepository.GetUserByIdAsync(id).ConfigureAwait(false);
@@ -105,6 +107,7 @@ namespace LRSIntro.Services
         {
             if (userAddOrUpdateDTO == null)
             {
+                // TODO not information this is an error
                 _logger?.LogInformation("Update failed. Update data is missing");
                 throw new ArgumentException("Update data is missing.", paramName: nameof(userAddOrUpdateDTO));
             }
@@ -118,6 +121,7 @@ namespace LRSIntro.Services
             try
             {
                 var res = await _userRepository.UpdateAsync(_mapper.Map<User>(userAddOrUpdateDTO)).ConfigureAwait(false);
+                // TODO what if user does not exist? throw bad request not 500
                 var user = await _userRepository.GetUserByIdAsync(res.Id).ConfigureAwait(false);
                 return _mapper.Map<UserDTO>(user);
             }
@@ -160,10 +164,12 @@ namespace LRSIntro.Services
             try
             {
                 var user = await _userRepository.GetUserByIdAsync(id).ConfigureAwait(false);
+                // TODO what if user does not exist? throw bad request not 500
                 _userRepository.Delete(user);
             }
             catch (Exception ex)
             {
+                // TODO why handle exceptions here???
                 _logger?.LogInformation(ex.Message);
                 throw new Exception(ex.Message, ex);
             }

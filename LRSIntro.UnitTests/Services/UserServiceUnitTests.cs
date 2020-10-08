@@ -26,6 +26,7 @@ namespace LRSIntro.UnitTests.Services
         private LRSIntroContext _lRSIntroContext;
         private DbContextOptions<LRSIntroContext> _dBContextOptions;
 
+        // TODO Mocking!!!!
         #endregion
 
         #region TestInit
@@ -71,6 +72,7 @@ namespace LRSIntro.UnitTests.Services
             _userRepository = new UserRepository(_lRSIntroContext);
             _userTypeRepository = new UserTypeRepository(_lRSIntroContext);
             _userTitleRepository = new UserTitleRepository(_lRSIntroContext);
+            // TODO inject mocked logger in tests no need for it to be null
             _userService = new UserService(_userRepository, _mapper, _userTypeRepository, _userTitleRepository, null);
         }
 

@@ -1,14 +1,13 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, throwError } from 'rxjs';
 import { IUser } from '../shared/Entities/IUser';
-import { map, catchError, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { IUserEdit } from '../shared/Entities/IUserEdit';
 import { environment } from 'src/environments/environment';
 import { IUserTitle } from '../shared/Entities/IUserTitle';
 import { IUserType } from '../shared/Entities/IUserType';
 import { IUserAddOrUpdate } from '../shared/Entities/IUserAddOrUpdate';
-import { debug } from 'console';
 
 @Injectable()
 export class UserService {
@@ -18,6 +17,7 @@ export class UserService {
   usersChanged = new Subject<IUser[]>();
   error = new Subject<string>();
 
+  // TODO what is this for?
   getUsers = () => {
     return this.users.slice();
   };
@@ -57,6 +57,7 @@ export class UserService {
 
   getUserDataForEdit = (id: number) => {
     let params = new HttpParams().set('id', id?.toString());
+    // TODO having just the /User path with different HTTP types is enough
     return this.http
       .get<IUserEdit>(environment.apiUrl + 'User/GetUserEditById', {
         params: params,
