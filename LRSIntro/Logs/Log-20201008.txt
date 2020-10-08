@@ -1,0 +1,6 @@
+2020-10-08T10:21:31.2400046+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2020-10-08T10:21:31.2511632+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2020-10-08T10:21:31.2565599+03:00  [INF] Content root path: "C:\Users\cadam\source\repos\LRSIntro\LRSIntro" (b5d60022)
+2020-10-08T10:41:23.6860277+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2020-10-08T10:41:23.6910168+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2020-10-08T10:41:23.6924528+03:00  [INF] Content root path: "C:\Users\cadam\source\repos\LRSIntro\LRSIntro" (b5d60022)
