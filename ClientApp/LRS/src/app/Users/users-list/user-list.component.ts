@@ -50,6 +50,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  // TODO not used
   onHandleError() {
     this.error = null;
   }

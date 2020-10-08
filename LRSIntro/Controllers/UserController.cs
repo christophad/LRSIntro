@@ -159,6 +159,7 @@ namespace LRSIntro.Controllers
             }
             catch (ArgumentException ex)
             {
+                // TODO log any exception where handled
                 return BadRequest(error: ex.Message);
             }
             catch (Exception ex)

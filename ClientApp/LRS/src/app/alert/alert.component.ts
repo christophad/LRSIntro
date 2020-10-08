@@ -8,6 +8,7 @@ import { AlertService } from './alert.service';
   styleUrls: ['./alert.component.css'],
 })
 export class AlertComponent implements OnInit {
+  // TODO never leave commented code if not needed or without todo
   // @Input() message: string;
   // @Output() close = new EventEmitter<void>();
 

@@ -23,6 +23,7 @@ describe('AppComponent', () => {
   it(`should have as title 'LRS'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    // TODO does not exist remove spec files
     expect(app.title).toEqual('LRS');
   });
 

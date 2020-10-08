@@ -14,6 +14,7 @@ namespace LRSIntro.Repositories
             _lRSIntroContext = lRSIntroContext;
         }
 
+        // TODO not needed
         public async Task<IEnumerable<UserTitle>> GetAllUserTitlesAsync()
         {
             var result = await _lRSIntroContext.UserTitle

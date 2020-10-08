@@ -29,7 +29,8 @@ namespace LRSIntro
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddDbContext<LRSIntroContext>(options => options.UseSqlServer(Configuration["Database:ConnectionString"]));
+            services.AddDbContext<LRSIntroContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IntroductoryContext")));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserTypeRepository, UserTypeRepository>();
