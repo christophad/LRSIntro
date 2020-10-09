@@ -30,9 +30,19 @@ namespace LRSIntro.DTO
         public string UserType { get; set; }
 
         /// <summary>
-        /// The user title
+        /// The user type identifier
+        /// </summary>
+        public int UserTypeId { get; set; }
+
+        /// <summary>
+        /// The user title 
         /// </summary>
         public string UserTitle { get; set; }
+
+        /// <summary>
+        /// The user title identifier
+        /// </summary>
+        public int UserTitleId { get; set; }
 
         /// <summary>
         /// The user email

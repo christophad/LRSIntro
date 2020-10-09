@@ -43,6 +43,7 @@ namespace LRSIntro.Repositories
         {
             user.IsActive = false;
             _lRSIntroContext.Update<User>(user);
+            _lRSIntroContext.SaveChanges();
         }
     }
 }

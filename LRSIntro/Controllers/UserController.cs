@@ -1,23 +1,23 @@
 ﻿using LRSIntro.DTO;
-using LRSIntro.Models;
 using LRSIntro.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace LRSIntro.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly ILogger<UserController> _logger;
+        public UserController(IUserService userService, ILogger<UserController> logger)
         {
-            _userService = userService;
-
+            _userService = userService ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -33,6 +33,7 @@ namespace LRSIntro.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
@@ -43,6 +44,7 @@ namespace LRSIntro.Controllers
         /// <param name="id">The user identifier</param>
         /// <returns cref="UserDTO"></returns>
         [HttpGet]
+        [Route("{id}")]
         public async Task<ActionResult<UserDTO>> GetUserById(int id)
         {
             try
@@ -55,37 +57,18 @@ namespace LRSIntro.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
 
-        /// <summary>
-        /// Gets a User by identifier
-        /// </summary>
-        /// <param name="id">The user identifier</param>
-        /// <returns cref="UserDTO"></returns>
-        [HttpGet]
-        public async Task<ActionResult<UserEditDTO>> GetUserEditById(int id)
-        {
-            try
-            {
-                return Ok(await _userService.GetUserEditByIdAsync(id).ConfigureAwait(false));
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(error: ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
 
         /// <summary>
         /// Returns a list of all user titles
         /// </summary>
         /// <returns>A <see cref="IEnumerable{UserTitleDTO}"/></returns>
         [HttpGet]
+        [Route("Titles")]
         public async Task<ActionResult<IEnumerable<UserTitleDTO>>> GetUserTitles()
         {
             try
@@ -98,6 +81,7 @@ namespace LRSIntro.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
@@ -107,6 +91,7 @@ namespace LRSIntro.Controllers
         /// </summary>
         /// <returns>A <see cref="IEnumerable{UserTypeDTO}"/></returns>
         [HttpGet]
+        [Route("Types")]
         public async Task<ActionResult<IEnumerable<UserTypeDTO>>> GetUserTypes()
         {
             try
@@ -119,6 +104,7 @@ namespace LRSIntro.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
@@ -141,6 +127,7 @@ namespace LRSIntro.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
@@ -159,11 +146,11 @@ namespace LRSIntro.Controllers
             }
             catch (ArgumentException ex)
             {
-                // TODO log any exception where handled
                 return BadRequest(error: ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
@@ -182,6 +169,7 @@ namespace LRSIntro.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }

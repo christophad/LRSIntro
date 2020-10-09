@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { AlertService } from 'src/app/alert/alert.service';
 import { LoaderService } from 'src/app/loader/loader.service';
 import { IUser } from 'src/app/shared/Entities/IUser';
-import { UtilityServices } from 'src/app/shared/utils/utilityServices';
 import { UserService } from '../user.service';
 
 @Component({
@@ -16,11 +15,11 @@ export class UserListComponent implements OnInit, OnDestroy {
   error = null;
   users: IUser[];
   subscription: Subscription;
+  filteredText = '';
 
   constructor(
     private userService: UserService,
     private loaderService: LoaderService,
-    public utilityServices: UtilityServices,
     private alertService: AlertService,
     private router: Router,
     private route: ActivatedRoute
@@ -48,11 +47,6 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-  }
-
-  // TODO not used
-  onHandleError() {
-    this.error = null;
   }
 
   onAddUser = () => {

@@ -30,7 +30,7 @@ namespace LRSIntro
         {
             services.AddCors();
             services.AddDbContext<LRSIntroContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IntroductoryContext")));
+                options.UseSqlServer(Configuration["Database:ConnectionString"]));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserTypeRepository, UserTypeRepository>();
@@ -86,6 +86,7 @@ namespace LRSIntro
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "LRS API");
                 //c.RoutePrefix = string.Empty;
             });
+
         }
     }
 }

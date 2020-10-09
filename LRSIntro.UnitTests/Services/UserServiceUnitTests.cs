@@ -5,9 +5,10 @@ using LRSIntro.Mapping;
 using LRSIntro.Models;
 using LRSIntro.Repositories;
 using LRSIntro.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LRSIntro.UnitTests.Services
@@ -17,19 +18,17 @@ namespace LRSIntro.UnitTests.Services
     {
         #region User Service Variables
 
-
         private IMapper _mapper;
         private IUserService _userService;
-        private IUserRepository _userRepository;
-        private IUserTitleRepository _userTitleRepository;
-        private IUserTypeRepository _userTypeRepository;
-        private LRSIntroContext _lRSIntroContext;
-        private DbContextOptions<LRSIntroContext> _dBContextOptions;
+        private Mock<IRepository<User>> _mockRepository;
+        private Mock<IUserRepository> _mockUserRepository;
+        private Mock<IUserTitleRepository> _mockUserTitleRepository;
+        private Mock<IUserTypeRepository> _mockUserTypeRepository;
 
-        // TODO Mocking!!!!
         #endregion
 
         #region TestInit
+
         [TestInitialize]
         public void Setup()
         {
@@ -39,52 +38,32 @@ namespace LRSIntro.UnitTests.Services
             });
 
             _mapper = config.CreateMapper();
-            _dBContextOptions = new DbContextOptionsBuilder<LRSIntroContext>().UseInMemoryDatabase("LRSIntro").Options;
-
-            _lRSIntroContext = new LRSIntroContext(_dBContextOptions);
-
-            _lRSIntroContext.UserTitle.Add(new UserTitle
-            {
-                Id = 1,
-                Description = "Mr"
-            });
-
-            _lRSIntroContext.UserType.Add(new UserType
-            {
-                Id = 1,
-                Description = "Developer",
-                Code = "Dev"
-            });
-
-            _lRSIntroContext.User.Add(new User
-            {
-                Id = 1,
-                Name = "Test Name",
-                Surname = "Test surname",
-                BirthDate = DateTime.Now,
-                EmailAddress = "test@test.gr",
-                UserTypeId = 1,
-                UserTitleId = 1,
-                IsActive = true
-            });
-            _lRSIntroContext.SaveChanges();
-
-            _userRepository = new UserRepository(_lRSIntroContext);
-            _userTypeRepository = new UserTypeRepository(_lRSIntroContext);
-            _userTitleRepository = new UserTitleRepository(_lRSIntroContext);
-            // TODO inject mocked logger in tests no need for it to be null
-            _userService = new UserService(_userRepository, _mapper, _userTypeRepository, _userTitleRepository, null);
+            _mockRepository = new Mock<IRepository<User>>();
+            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserTypeRepository = new Mock<IUserTypeRepository>();
+            _mockUserTitleRepository = new Mock<IUserTitleRepository>();
+            _userService = new UserService(_mockUserRepository.Object, _mapper, _mockUserTypeRepository.Object, _mockUserTitleRepository.Object);
         }
 
         #endregion
 
         #region Test Methods
+
         [TestMethod]
         [TestCategory("Success")]
         public void GetAllUsersSuccessTest()
         {
+            // prepare
+            List<User> users = new List<User>() {
+                new User{ Id = 1, Name = "test", Surname = "test", UserTitleId = 1, UserTypeId = 1 }
+            };
+            _ = _mockUserRepository.Setup(x => x.GetAllUsersWithDetailsAsync()).ReturnsAsync(users);
+
+            //execute
             var result = _userService.GetAllUsersWithDetailsAsync().Result;
-            int totalUsers = _lRSIntroContext.User.Count();
+
+            //assert
+            int totalUsers = users.Count();
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Count(), totalUsers);
         }
@@ -93,8 +72,15 @@ namespace LRSIntro.UnitTests.Services
         [TestCategory("Success")]
         public void GetUserByIdSuccessTest()
         {
+            //prepare
             int id = 1;
+            var user = new User { Id = 1, Name = "test", Surname = "test", UserTitleId = 1, UserTypeId = 1 };
+            _ = _mockUserRepository.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(user);
+
+            //execute
             var result = _userService.GetUserByIdAsync(id).Result;
+
+            //assert
             Assert.IsNotNull(result);
         }
 
@@ -102,11 +88,14 @@ namespace LRSIntro.UnitTests.Services
         [TestCategory("Fail")]
         public void GetUserByIdFailTest()
         {
+            //prepare
             int id = -1;
 
+            //execute
             var ex = Assert.ThrowsExceptionAsync<ArgumentException>(
               () => _userService.GetUserByIdAsync(id));
 
+            //assert
             _ = ex.Result.Should().BeOfType(typeof(ArgumentException));
         }
 
@@ -114,17 +103,35 @@ namespace LRSIntro.UnitTests.Services
         [TestCategory("Success")]
         public void AddUserSuccess()
         {
+            //prepare
             var data = new UserAddOrUpdateDTO
             {
                 Name = "test",
-                UserTitle = 1,
-                UserType = 1,
+                UserTitleId = 1,
+                UserTypeId = 1,
                 IsActive = true,
                 EmailAddress = "test@test.com"
 
             };
 
+            var newUser = new User
+            {
+                Id = 1,
+                Name = "test",
+                UserTitleId = 1,
+                UserTypeId = 1,
+                IsActive = true,
+                EmailAddress = "test@test.com"
+            };
+
+            _ = _mockUserRepository.Setup(x => x.AddAsync(It.IsAny<User>())).ReturnsAsync(newUser);
+            _ = _mockUserRepository.Setup(x => x.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(newUser);
+
+
+            //execute
             var res = _userService.AddUserAsync(data).Result;
+
+            //assert
             Assert.IsNotNull(res);
             Assert.IsInstanceOfType(res, typeof(UserDTO));
         }

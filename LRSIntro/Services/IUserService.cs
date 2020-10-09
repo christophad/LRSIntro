@@ -21,13 +21,6 @@ namespace LRSIntro.Services
         Task<UserDTO> GetUserByIdAsync(int id);
 
         /// <summary>
-        /// Returns a User by user identifier.
-        /// </summary>
-        /// <param name="id">The user identifier.</param>
-        /// <returns>A <see cref="UserEditDTO"/></returns>
-        Task<UserEditDTO> GetUserEditByIdAsync(int id);
-
-        /// <summary>
         /// Returns a list of all user titles
         /// </summary>
         /// <returns>A <see cref="IEnumerable{UserTitleDTO}"/></returns>

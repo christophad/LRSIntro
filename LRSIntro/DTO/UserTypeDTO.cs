@@ -1,6 +1,4 @@
-﻿
-
-namespace LRSIntro.DTO
+﻿namespace LRSIntro.DTO
 {
     public class UserTypeDTO
     {

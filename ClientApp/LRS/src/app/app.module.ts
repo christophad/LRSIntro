@@ -14,10 +14,10 @@ import { LoaderComponent } from './loader/loader.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoaderService } from './loader/loader.service';
 import { DatePipe } from '@angular/common';
-import { UtilityServices } from './shared/utils/utilityServices';
 import { UserEditComponent } from './Users/user-edit/user-edit.component';
 import { AlertService } from './alert/alert.service';
 import { MapComponent } from './map/map.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { MapComponent } from './map/map.component';
     LoaderComponent,
     UserEditComponent,
     MapComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
@@ -38,13 +39,7 @@ import { MapComponent } from './map/map.component';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [
-    UserService,
-    LoaderService,
-    DatePipe,
-    UtilityServices,
-    AlertService,
-  ],
+  providers: [UserService, LoaderService, DatePipe, AlertService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

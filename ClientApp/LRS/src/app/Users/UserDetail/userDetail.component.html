@@ -1,6 +1,12 @@
-<!-- TODO this has a different layout than the details which is confusing-->
-
 <form *ngIf="!isFetching">
+  <div class="form-group row">
+    <label for="userTitle" class="col-sm-2 col-form-label">Title</label>
+    <div class="col-sm-10">
+      <div class="form-control" id="userTitle" placeholder="userTitle">
+        {{ user?.userTitle }}
+      </div>
+    </div>
+  </div>
   <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label">Name</label>
     <div class="col-sm-10">
@@ -21,23 +27,7 @@
     <label for="birthdate" class="col-sm-2 col-form-label">Birthdate</label>
     <div class="col-sm-10">
       <div class="form-control" id="birthdate" placeholder="birthdate">
-        {{ utilityServices.formatDate(user?.birthDate) }}
-      </div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="userType" class="col-sm-2 col-form-label">Type</label>
-    <div class="col-sm-10">
-      <div class="form-control" id="userType" placeholder="userType">
-        {{ user?.userType }}
-      </div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="userTitle" class="col-sm-2 col-form-label">Title</label>
-    <div class="col-sm-10">
-      <div class="form-control" id="userTitle" placeholder="userTitle">
-        {{ user?.userTitle }}
+        {{ user?.birthDate | date: 'dd/MM/yyyy' }}
       </div>
     </div>
   </div>
@@ -46,6 +36,14 @@
     <div class="col-sm-10">
       <div class="form-control" id="email" placeholder="email">
         {{ user?.emailAddress }}
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="userType" class="col-sm-2 col-form-label">Type</label>
+    <div class="col-sm-10">
+      <div class="form-control" id="userType" placeholder="userType">
+        {{ user?.userType }}
       </div>
     </div>
   </div>

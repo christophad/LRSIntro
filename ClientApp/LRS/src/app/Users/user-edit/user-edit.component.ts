@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -5,14 +6,13 @@ import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AlertService } from 'src/app/alert/alert.service';
 import { LoaderService } from 'src/app/loader/loader.service';
-import { IUserEdit } from 'src/app/shared/Entities/IUserEdit';
+import { IUserAddOrUpdate } from 'src/app/shared/Entities/IUserAddOrUpdate';
 import { IUserTitle } from 'src/app/shared/Entities/IUserTitle';
 import { IUserType } from 'src/app/shared/Entities/IUserType';
-import { UtilityServices } from 'src/app/shared/utils/utilityServices';
 import { UserService } from '../user.service';
 
 interface IUserEditModel {
-  user: IUserEdit;
+  user: IUserAddOrUpdate;
   titles: IUserTitle[];
   types: IUserType[];
 }
@@ -27,7 +27,7 @@ export class UserEditComponent implements OnInit {
   editMode = false;
   userForm: FormGroup;
   userEditModel: IUserEditModel;
-  user: IUserEdit;
+  user: IUserAddOrUpdate;
   isFetching = false;
   error = null;
 
@@ -36,8 +36,8 @@ export class UserEditComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private loaderService: LoaderService,
-    private utilityServices: UtilityServices,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class UserEditComponent implements OnInit {
       this.id = +params['id'];
       this.editMode = params['id'] != null;
 
-      const userDataObs = this.userService.getUserDataForEdit(this.id);
+      const userDataObs = this.userService.getUser(this.id);
       const userTitlesObs = this.userService.getUserTitles();
       const userTypesObs = this.userService.getUserTypes();
       let combinedResult: Observable<IUserEditModel>;
@@ -67,7 +67,6 @@ export class UserEditComponent implements OnInit {
           })
         );
       } else {
-        // TODO explain?
         combinedResult = forkJoin([userTitlesObs, userTypesObs]).pipe(
           map(([y, z]) => {
             return <IUserEditModel>{
@@ -76,8 +75,8 @@ export class UserEditComponent implements OnInit {
                 name: '',
                 surname: '',
                 birthDate: null,
-                userType: null,
-                userTitle: null,
+                userTypeId: null,
+                userTitleId: null,
                 emailAddress: null,
                 isActive: true,
               },
@@ -103,8 +102,8 @@ export class UserEditComponent implements OnInit {
               name: '',
               surname: '',
               birthDate: null,
-              userType: null,
-              userTitle: null,
+              userTypeId: null,
+              userTitleId: null,
               emailAddress: null,
               isActive: true,
             },
@@ -125,17 +124,20 @@ export class UserEditComponent implements OnInit {
       name: new FormControl(userModel.user.name),
       surname: new FormControl(userModel.user.surname),
       birthDate: new FormControl(
-        this.utilityServices.formatDateForReactiveForm(
-          userModel.user?.birthDate
-        )
+        userModel.user?.birthDate
+          ? this.datePipe.transform(userModel.user?.birthDate, 'yyyy-MM-dd')
+          : null
       ),
-      email: new FormControl(userModel.user.emailAddress, Validators.email),
-      userType: new FormControl(
-        userModel.user.userType?.id,
+      emailAddress: new FormControl(
+        userModel.user.emailAddress,
+        Validators.email
+      ),
+      userTypeId: new FormControl(
+        userModel.user.userTypeId,
         Validators.required
       ),
-      userTitle: new FormControl(
-        userModel.user.userTitle?.id,
+      userTitleId: new FormControl(
+        userModel.user.userTitleId,
         Validators.required
       ),
     });
@@ -143,17 +145,11 @@ export class UserEditComponent implements OnInit {
 
   onSubmit() {
     this.loaderService.showLoader();
+    const userData = this.userForm.value as IUserAddOrUpdate;
     if (this.editMode) {
-      // TODO this.userForm.value as IUserAddOrUpdate;
       this.userService
         .updateUser({
-          id: this.userForm.value.id,
-          name: this.userForm.value.name,
-          surname: this.userForm.value.surname,
-          birthDate: this.userForm.value.birthDate,
-          userTypeId: this.userForm.value.userType,
-          userTitleId: this.userForm.value.userTitle,
-          emailAddress: this.userForm.value.email,
+          ...userData,
           isActive: true,
         })
         .subscribe(
@@ -169,15 +165,9 @@ export class UserEditComponent implements OnInit {
           }
         );
     } else {
-      // TODO this.userForm.value as IUserAddOrUpdate;
       this.userService
         .addUser({
-          name: this.userForm.value.name,
-          surname: this.userForm.value.surname,
-          birthDate: this.userForm.value.birthDate,
-          userTypeId: this.userForm.value.userType,
-          userTitleId: this.userForm.value.userTitle,
-          emailAddress: this.userForm.value.email,
+          ...userData,
           isActive: true,
         })
         .subscribe(

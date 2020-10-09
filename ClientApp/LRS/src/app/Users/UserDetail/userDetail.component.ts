@@ -1,10 +1,8 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AlertService } from 'src/app/alert/alert.service';
 import { LoaderService } from 'src/app/loader/loader.service';
 import { IUser } from 'src/app/shared/Entities/IUser';
-import { UtilityServices } from 'src/app/shared/utils/utilityServices';
 import { UserService } from '../user.service';
 
 @Component({
@@ -23,7 +21,6 @@ export class UserDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private loaderService: LoaderService,
-    public utilityServices: UtilityServices,
     private alertService: AlertService
   ) {}
 

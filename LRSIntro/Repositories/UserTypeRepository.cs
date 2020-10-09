@@ -1,7 +1,4 @@
 ﻿using LRSIntro.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace LRSIntro.Repositories
 {
@@ -12,15 +9,6 @@ namespace LRSIntro.Repositories
         public UserTypeRepository(LRSIntroContext lRSIntroContext) : base(lRSIntroContext)
         {
             _lRSIntroContext = lRSIntroContext;
-        }
-
-        // TODO not needed
-        public async Task<IEnumerable<UserType>> GetAllUserTypesAsync()
-        {
-            var result = await _lRSIntroContext.UserType
-                .ToListAsync()
-                .ConfigureAwait(false);
-            return result;
         }
     }
 }

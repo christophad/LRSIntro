@@ -8,8 +8,8 @@ namespace LRSIntro.DTO
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime? BirthDate { get; set; }
-        public int UserType { get; set; }
-        public int UserTitle { get; set; }
+        public int UserTypeId { get; set; }
+        public int UserTitleId { get; set; }
         public string EmailAddress { get; set; }
         public bool? IsActive { get; set; }
     }
