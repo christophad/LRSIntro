@@ -20,7 +20,6 @@ namespace LRSIntro.UnitTests.Services
 
         private IMapper _mapper;
         private IUserService _userService;
-        private Mock<IRepository<User>> _mockRepository;
         private Mock<IUserRepository> _mockUserRepository;
         private Mock<IUserTitleRepository> _mockUserTitleRepository;
         private Mock<IUserTypeRepository> _mockUserTypeRepository;
@@ -38,7 +37,6 @@ namespace LRSIntro.UnitTests.Services
             });
 
             _mapper = config.CreateMapper();
-            _mockRepository = new Mock<IRepository<User>>();
             _mockUserRepository = new Mock<IUserRepository>();
             _mockUserTypeRepository = new Mock<IUserTypeRepository>();
             _mockUserTitleRepository = new Mock<IUserTitleRepository>();

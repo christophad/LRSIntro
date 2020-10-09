@@ -52,3 +52,6 @@ Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Conflicting method/
 2020-10-09T14:25:10.1463638+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
 2020-10-09T14:25:10.1511750+03:00  [INF] Hosting environment: "Development" (c3307c92)
 2020-10-09T14:25:10.1523671+03:00  [INF] Content root path: "C:\Users\cadam\source\repos\LRSIntro\LRSIntro" (b5d60022)
+2020-10-09T15:00:13.3984806+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2020-10-09T15:00:13.4037861+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2020-10-09T15:00:13.4052622+03:00  [INF] Content root path: "C:\Users\cadam\source\repos\LRSIntro\LRSIntro" (b5d60022)
