@@ -15,7 +15,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   error = null;
   users: IUser[];
   subscription: Subscription;
-  filteredText = '';
+  filteredText = ''; //TODO filter on backend
 
   constructor(
     private userService: UserService,
