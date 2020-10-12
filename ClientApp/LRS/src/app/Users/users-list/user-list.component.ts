@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { AlertService } from 'src/app/alert/alert.service';
 import { LoaderService } from 'src/app/loader/loader.service';
 import { IUser } from 'src/app/shared/Entities/IUser';
@@ -15,7 +16,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   error = null;
   users: IUser[];
   subscription: Subscription;
-  filteredText = '';
+  @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
 
   constructor(
     private userService: UserService,
@@ -38,11 +39,31 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.error = error.message;
       }
     );
+
     this.subscription = this.userService.usersChanged.subscribe(
       (users: IUser[]) => {
         this.users = users;
       }
     );
+
+    fromEvent(this.searchInput.nativeElement,'keyup').pipe(
+      map((event: any) => {
+        return event.target.value;
+      }),debounceTime(500)
+    ).subscribe((text: string) =>{
+      this.loaderService.showLoader();
+      this.userService.searchUsers(text).subscribe(
+      (users: IUser[]) => {
+        this.users = users;
+        this.loaderService.hideLoader();
+      },
+      (error) => {
+        this.loaderService.hideLoader();
+        this.alertService.showAlert(error.message);
+        this.error = error.message;
+      }
+    );
+    })
   }
 
   ngOnDestroy() {

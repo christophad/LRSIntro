@@ -110,4 +110,18 @@ export class UserService {
         })
       );
   };
+
+  searchUsers = (searchTerm: string) => {
+    let params = new HttpParams().set('searchTerm', searchTerm?.toString());
+    return this.http.get<IUser[]>(environment.apiUrl + 'User/Search', {params: params}).pipe(
+      map((response) => {
+        this.users = response;
+        return this.users.slice();
+      }),
+      catchError((errorRes) => {
+        return throwError(errorRes);
+      })
+    );
+  };
+
 }

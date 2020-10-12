@@ -11,7 +11,7 @@
       type="text"
       class="form-control"
       placeholder="Search"
-      [(ngModel)]="filteredText"
+      #searchInput
     />
   </div>
 </div>
@@ -28,7 +28,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users | filter: filteredText.toLowerCase()">
+    <tr *ngFor="let user of users">
       <th scope="row">
         <a [routerLink]="[user.id]">{{ user.id }}</a>
       </th>

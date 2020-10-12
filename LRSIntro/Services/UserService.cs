@@ -100,5 +100,11 @@ namespace LRSIntro.Services
             }
             _userRepository.DeleteUser(user);
         }
+
+        public async Task<IEnumerable<UserDTO>> SearchUsersAsync(string searchTerm)
+        {
+            var res = await _userRepository.SearchUsers(searchTerm).ConfigureAwait(false);
+            return _mapper.Map<IEnumerable<UserDTO>>(res);
+        }
     }
 }

@@ -24,5 +24,11 @@ namespace LRSIntro.Repositories
         /// </summary>
         /// <param name="user">The user</param>
         void DeleteUser(User user);
+
+        /// <summary>
+        /// Search users
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{User}"/></returns>
+        Task<IEnumerable<User>> SearchUsers(string searchTerm);
     }
 }

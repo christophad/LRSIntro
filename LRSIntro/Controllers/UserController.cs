@@ -173,5 +173,24 @@ namespace LRSIntro.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        /// <summary>
+        /// Search users
+        /// </summary>
+        /// <returns cref="IEnumerable{UserDTO}"></returns>
+        [HttpGet]
+        [Route("Search")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> SearchUsers(string searchTerm)
+        {
+            try
+            {
+                return Ok(await _userService.SearchUsersAsync(searchTerm).ConfigureAwait(false));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

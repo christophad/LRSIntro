@@ -45,5 +45,27 @@ namespace LRSIntro.Repositories
             _lRSIntroContext.Update<User>(user);
             _lRSIntroContext.SaveChanges();
         }
+
+        public async Task<IEnumerable<User>> SearchUsers(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return await _lRSIntroContext.User
+                .Include(x => x.UserTitle)
+                .Include(x => x.UserType)
+                .Where(x => x.IsActive == true)
+                .ToListAsync()
+                .ConfigureAwait(false);
+            }
+            else
+            {
+                return await _lRSIntroContext.User
+                .Include(x => x.UserTitle)
+                .Include(x => x.UserType)
+                .Where(x => x.IsActive == true && (x.Name.Contains(searchTerm) || x.Surname.Contains(searchTerm)))
+                .ToListAsync()
+                .ConfigureAwait(false);
+            }
+        }
     }
 }

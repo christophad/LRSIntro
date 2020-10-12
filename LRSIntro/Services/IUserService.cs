@@ -51,5 +51,11 @@ namespace LRSIntro.Services
         /// </summary>
         /// <param name="id">The user identifier</param>
         Task DeleteUserAsync(int id);
+
+        /// <summary>
+        /// Search users
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{UserDTO}"/></returns>
+        Task<IEnumerable<UserDTO>> SearchUsersAsync(string searchTerm);
     }
 }
