@@ -64,6 +64,7 @@ namespace LRSIntro.Services
             }
 
             var res = await _userRepository.UpdateAsync(_mapper.Map<User>(userAddOrUpdateDTO)).ConfigureAwait(false);
+            // TODO this is not an argument check arguments are method arguments. throw a custom exception
             if (res == null)
             {
                 throw new ArgumentException($"User with id {userAddOrUpdateDTO.Id} was not found in the database");
@@ -94,6 +95,7 @@ namespace LRSIntro.Services
             }
 
             var user = await _userRepository.GetUserByIdAsync(id).ConfigureAwait(false);
+            // TODO this is not an argument check arguments are method arguments. throw a custom exception
             if (user == null)
             {
                 throw new ArgumentException($"User with id {id} was not found in the database");

@@ -1,4 +1,4 @@
-Demo Project that uses .Net Core as backend API and Angular 10 on the front end.
+Demo Project that uses .Net Core as backend API and Angular 9 on the front end.
 In order to run the project follow the steps
 1)Run createDB.sql on a local db
 2)Modify the appsettings.json file on LRSIntro project in order the connection string to point at your db
